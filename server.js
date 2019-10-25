@@ -62,15 +62,15 @@ io.on('connection', function (socket) {
     //     };
     // }
 
-
     // send the players object to the new player
     socket.emit('currentPlayers', players);
+    io.emit('carrotLocation', carrot);
     // send the star object to the new player
-    if (Object.keys(players).length >= 2) {
-        io.emit('carrotLocation', carrot);
+    // if (Object.keys(players).length >= 2) {
+    //     io.emit('carrotLocation', carrot);
     
 
-    }
+    // }
     // send the current scores
     socket.emit('scoreUpdate', scores);
     // update all other players of the new player
@@ -111,6 +111,12 @@ io.on('connection', function (socket) {
 
     socket.on('rabbitCaught', () => {
         scores.farmer += 1;
+        io.emit('scoreUpdate', scores);
+    });
+
+    socket.on('reset', () => {
+        scores.farmer = 0;
+        scores.rabbit = 0;
         io.emit('scoreUpdate', scores);
     });
 });

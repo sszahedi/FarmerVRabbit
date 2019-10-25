@@ -77,6 +77,7 @@ function create() {
     this.redScoreText = this.add.text(675, 16, '', { fontSize: '32px', fill: '#FF0000' });
 
     this.socket.on('scoreUpdate', function (scores) {
+        music = self.sound.play('crunch');
         self.blueScoreText.setText('Farmer: ' + scores.farmer);
         self.redScoreText.setText('Rabbit: ' + scores.rabbit);
     });
@@ -88,7 +89,7 @@ function create() {
             self.physics.add.overlap(self.farmer, self.carrot, function () {
 
                 self.carrot.destroy();
-                music = self.sound.play('crunch');
+                // music = self.sound.play('crunch');
 
                 this.socket.emit('carrotCollected', carrotLocation);
             }, null, self);
@@ -101,6 +102,7 @@ function create() {
 
         //     }, null, self);
         // }
+
 
 
     });
@@ -176,4 +178,9 @@ function update() {
             displayWidth: this.farmer.facing
         };
     }
+
+    $('#reset').click(()=>{
+        console.log('reset');
+        this.socket.emit('reset');
+    });
 }
